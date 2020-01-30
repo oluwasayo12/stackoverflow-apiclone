@@ -103,4 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
+<<<<<<< HEAD
 node_modules/
+=======
+node_modules/
+>>>>>>> 8749be8934174b28ab901328cb957e06cf249046
