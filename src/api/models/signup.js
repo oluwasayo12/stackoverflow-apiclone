@@ -5,13 +5,13 @@ const signupSchema = mongoose.Schema({
     name: String,
     email: {
         type: String, 
-        required: true, 
+        required: [true, 'email field is required'], 
         unique: true,
         match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     password: {
         type: String, 
-        required: true
+        required: [true, 'password field is required']
     }
 });
 

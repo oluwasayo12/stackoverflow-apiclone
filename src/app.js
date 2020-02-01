@@ -3,7 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const userSignin = require('../src/routes/signup');
+const userSignup = require('../src/routes/signup');
+const userSignin = require('../src/routes/signin');
 
 
 mongoose.connect('mongodb+srv://softcom:8Ubvsyl9cT8WncQd@softcom-quobr.mongodb.net/test?retryWrites=true&w=majority',{ 
@@ -28,7 +29,8 @@ app.use((req, res, next) => {
 
 
 
-app.use('/signup', userSignin );
+app.use('/signup', userSignup );
+app.use('/login', userSignin );
 
 
 
