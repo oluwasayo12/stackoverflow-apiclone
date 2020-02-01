@@ -32,7 +32,7 @@ router.post('/', (req, res, next) => {
             }
         });
     }else{
-        Signup.find({email: req.body.email})
+        Signup.findOne({email: req.body.email})
         .exec()
         .then(user =>{
             if(user.length >= 1){

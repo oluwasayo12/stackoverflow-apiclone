@@ -4,9 +4,9 @@ const Question = require('../api/models/question');
 const mongoose = require('mongoose');
 const checkAuth  = require('../routes/middleware/check-auth');
 
-
+//Get questions
 router.get('/', (req, res, next) => {
-    Question.find()
+    Question.findOne()
     .select("_id title question tags votes")
     .exec()
     .then(result =>{
@@ -27,6 +27,7 @@ router.get('/', (req, res, next) => {
     }); 
 });
 
+//Post a new question
 router.post('/', checkAuth, (req, res, next) => {
     const questionDetails = new Question({
         _id: mongoose.Types.ObjectId(),
@@ -40,6 +41,7 @@ router.post('/', checkAuth, (req, res, next) => {
         const response = {
             status:201,
             success: true,
+            totalQuestions: result.length,
             questionDetails: { 
                 title: result.title,
                 question: result.question,
@@ -58,8 +60,73 @@ router.post('/', checkAuth, (req, res, next) => {
     }); 
 });
 
-// router.post('/:id', checkAuth, (req, res, next) => {
+// votes questions
+router.patch('/:id', checkAuth, (req, res, next) => {
 
-// });
+    const voteType = req.body.voteType;
+    const value = req.body.value;
+
+    Question.findById({_id: req.params.id})
+    .exec()
+    .then(question =>{
+        if(question._id != ''){
+            const currentVote = (question.votes || 0);
+
+            if(value == 1){
+                if(voteType == 'upvote'){
+                    var newvote = currentVote + value;
+                }else if(voteType == 'downvote'){
+                    var newvote = currentVote - value;
+                }  
+                var query = { _id: question._id };
+                Question.updateOne(query, { votes: newvote })
+                .then(result => {
+                    const response = {
+                        status:201,
+                        success: true,
+                        questionDetails: { 
+                            title: question.title,
+                            question: question.question,
+                            tags: question.tags,
+                            votes: newvote
+                        }
+                    }
+                    res.status(201).json(response);     
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        status: 400,
+                        error: {
+                            message: err
+                        }
+                    });  
+                })
+            }else{
+                res.status(400).json({
+                    status: 400,
+                    error: {
+                        message: 'Votes value has to be equal to one(1)'
+                    }
+                });  
+            }
+
+        }else{
+                res.status(400).json({
+                    status: 400,
+                    error: {
+                        message: "Question doesn't exist. "
+                    }
+                });     
+            }
+    })
+    // .catch(err => {
+    //     res.status(400).json({
+    //         status: 400,
+    //         error: {
+    //             message: err
+    //         }
+    //     });  
+    // })
+});
 
 module.exports = router;
