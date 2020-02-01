@@ -3,6 +3,19 @@ const router = express.Router();
 const Signup = require('../api/models/signup');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const passwordValidator = require('password-validator');
+
+let passSchema = new passwordValidator();
+passSchema
+.is().min(8)                                    // Minimum length 8
+.is().max(100)                                  // Maximum length 100
+.has().uppercase()                              // Must have uppercase letters
+.has().lowercase()                              // Must have lowercase letters
+.has().digits()                                 // Must have digits
+.has().symbols()                                 // Must have symbols
+.has().not().spaces()                           // Should not have spaces
+.is().not().oneOf(['Passw0rd', 'Password123']);
+
 
 router.get('/', (req, res, next) => {
     res.status(405).json();
@@ -10,7 +23,16 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/', (req, res, next) => {
-    Signup.find({email: req.body.email})
+
+    if(passSchema.validate(req.body.password) === false ) {
+        res.status(400).json({
+            status: 400,
+            error: {
+                message: 'Invalid Password. must contain uppercase, lowercase, digits and special characters. Minimum lenght is 8'
+            }
+        });
+    }else{
+        Signup.find({email: req.body.email})
         .exec()
         .then(user =>{
             if(user.length >= 1){
@@ -60,7 +82,8 @@ router.post('/', (req, res, next) => {
                     }
                 })
             }
-    });
+        });
+    }
 });
 
 
