@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const userSignup = require('../src/routes/signup');
 const userSignin = require('../src/routes/signin');
+const question = require('../src/routes/question');
 
 
 mongoose.connect('mongodb+srv://softcom:8Ubvsyl9cT8WncQd@softcom-quobr.mongodb.net/test?retryWrites=true&w=majority',{ 
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 
 app.use('/signup', userSignup );
 app.use('/login', userSignin );
+app.use('/questions', question );
 
 
 
