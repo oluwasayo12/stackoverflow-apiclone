@@ -1,6 +1,16 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const userSignin = require('../src/routes/signup');
+
+
+mongoose.connect('mongodb+srv://softcom:8Ubvsyl9cT8WncQd@softcom-quobr.mongodb.net/test?retryWrites=true&w=majority',{ 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useCreateIndex: true 
+});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -17,7 +27,7 @@ app.use((req, res, next) => {
 
 
 
-const userSignin = require('../src/routes/signup');
+
 app.use('/signup', userSignin );
 
 
