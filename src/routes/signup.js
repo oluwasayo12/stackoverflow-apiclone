@@ -35,7 +35,7 @@ router.post('/', (req, res, next) => {
         Signup.findOne({email: req.body.email})
         .exec()
         .then(user =>{
-            if(user.length >= 1){
+            if(user){
                 res.status(400).json({
                     status: 400,
                     error: {
