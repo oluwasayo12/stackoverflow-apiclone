@@ -74,50 +74,41 @@ router.patch('/:id', checkAuth, (req, res, next) => {
         if(question._id != ''){
             const currentVote = (question.votes || 0);
 
-            if(value == 1){
-                if(voteType == 'upvote'){
-                    var newvote = currentVote + value;
-                }else if(voteType == 'downvote'){
-                    var newvote = currentVote - value;
-                }else{
-                    res.status(400).json({
-                        status: 400,
-                        error: {
-                            message: 'Invalid vote type'
-                        }
-                    }); 
-                }  
-                var query = { _id: question._id };
-                Question.updateOne(query, { votes: newvote })
-                .then(result => {
-                    const response = {
-                        status:201,
-                        success: true,
-                        questionDetails: { 
-                            title: question.title,
-                            question: question.question,
-                            tags: question.tags,
-                            votes: newvote
-                        }
-                    }
-                    res.status(201).json(response);     
-                })
-                .catch(err => {
-                    res.status(400).json({
-                        status: 400,
-                        error: {
-                            message: err
-                        }
-                    });  
-                })
+            if(voteType == 'upvote'){
+                var newvote = parseInt(currentVote) + 1;
+            }else if(voteType == 'downvote'){
+                var newvote = parseInt(currentVote) - 1;
             }else{
                 res.status(400).json({
                     status: 400,
                     error: {
-                        message: 'Votes value has to be equal to one(1)'
+                        message: 'Invalid vote type'
+                    }
+                }); 
+            }  
+            var query = { _id: question._id };
+            Question.updateOne(query, { votes: newvote })
+            .then(result => {
+                const response = {
+                    status:201,
+                    success: true,
+                    questionDetails: { 
+                        title: question.title,
+                        question: question.question,
+                        tags: question.tags,
+                        votes: newvote
+                    }
+                }
+                res.status(201).json(response);     
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 400,
+                    error: {
+                        message: err
                     }
                 });  
-            }
+            })
 
         }else{
                 res.status(400).json({
