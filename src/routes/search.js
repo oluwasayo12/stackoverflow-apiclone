@@ -84,8 +84,7 @@ router.post('/', (req, res, next) => {
                 userDetails: { 
                     id: user._id,
                     name: user.name,
-                    email: user.email,
-                    users: user
+                    email: user.email
                 }
             }
             res.status(201).json(response);
