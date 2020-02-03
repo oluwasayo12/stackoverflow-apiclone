@@ -15,4 +15,6 @@ const signupSchema = mongoose.Schema({
     }
 });
 
+signupSchema.index({name: 'text', 'email': 'text'});
+
 module.exports = mongoose.model("Signup", signupSchema);

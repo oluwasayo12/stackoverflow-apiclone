@@ -15,4 +15,6 @@ const questionSchema = mongoose.Schema({
     votes: Number
 });
 
+questionSchema.index({userId: 'text', title: 'text', question: 'text' , tags: 'text'});
+
 module.exports = mongoose.model("Question", questionSchema);

@@ -9,10 +9,13 @@ router.get('/', (req, res, next) => {
 });
 
 //search based on type
-router.post('/:id', (req, res, next) => {
+router.post('/', (req, res, next) => {
     var searchType = req.body.searchType;
+    var searchValue = req.body.searchValue;
+
     if(searchType == 'question'){
-        Question.findById({_id: req.params.id})
+        Question.find({$text: {$search: searchValue}})
+        .select("_id title question tags votes")
         .exec()
         .then(question =>{
             const response = {
@@ -36,7 +39,8 @@ router.post('/:id', (req, res, next) => {
             });  
         })
     }else if(searchType == 'answer'){
-        ansQuestion.findById({_id: req.params.id})
+        ansQuestion.find({$text: {$search: searchValue}})
+        .select("_id title question votes")
         .exec()
         .then(questionAns =>{
            Question.findById({_id: questionAns.quesId})
@@ -70,7 +74,8 @@ router.post('/:id', (req, res, next) => {
             });  
         })
     }else if(searchType == 'user'){
-        User.findById({_id: req.params.id})
+        User.find({$text: {$search: searchValue}})
+        .select("_id name email")
         .exec()
         .then(user =>{
             const response = {
@@ -79,7 +84,8 @@ router.post('/:id', (req, res, next) => {
                 userDetails: { 
                     id: user._id,
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    users: user
                 }
             }
             res.status(201).json(response);
