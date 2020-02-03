@@ -17,11 +17,13 @@ Features focused on are:
 Usage
 <br/>
 
-To initialize package: run npm init <br/>
+To initialize package: run npm install <br/>
 
 To start node server: run npm start or node server/server.js
 
 Additional Info<br/>
 Database(MongoDB) connected via https://cloud.mongodb.com/ 
 
+
+<b>API Documentation:</b> https://documenter.getpostman.com/view/2791876/SWTEavN5?version=latest
 
