@@ -66,7 +66,6 @@ router.post('/', checkAuth, (req, res, next) => {
 router.patch('/:id', checkAuth, (req, res, next) => {
 
     var voteType = req.body.voteType;
-    var value = req.body.value;
 
     Question.findById({_id: req.params.id})
     .exec()
