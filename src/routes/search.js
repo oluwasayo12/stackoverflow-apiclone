@@ -34,32 +34,48 @@ router.post('/', (req, res, next) => {
         })
     }else if(searchType == 'answer'){
         ansQuestion.find({$text: {$search: searchValue}})
-        .select("_id title question votes")
+        .select("quesId answer")
         .exec()
         .then(questionAns =>{
-           Question.findById({_id: questionAns.quesId})
-           .exec()
-           .then(result =>{
-                const response = {
-                    status:201,
-                    success: true,
-                    Details: { 
-                        question:{
-                            id: result._id,
-                            title: result.title,
-                            question: result.question,
-                            votes: result.votes
-                        },
-                        answer: questionAns
+            if(Object.values(questionAns).length > 0){
+                Question.findById({_id: questionAns[0].quesId})
+                .exec()
+                .then(result =>{
+                     const response = {
+                         status:201,
+                         success: true,
+                         Details: { 
+                             question:{
+                                 id: result._id,
+                                 title: result.title,
+                                 question: result.question,
+                                 votes: result.votes
+                             },
+                             answer: questionAns
+                         }
+                     }
+                     res.status(201).json(response);
+                }).catch(err => {
+                     res.status(400).json({
+                         status: 400,
+                         error: {
+                             message: "No result found"
+                         }
+                     });  
+                 });
+            }else{
+                res.status(400).json({
+                    status: 400,
+                    error: {
+                        message: "No result found"
                     }
-                }
-                res.status(201).json(response);
-           })
+                });  
+            }
         }).catch(err => {
             res.status(400).json({
                 status: 400,
                 error: {
-                    message: "Invalid search id provided"
+                    message: err
                 }
             });  
         })

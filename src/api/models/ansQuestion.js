@@ -13,6 +13,6 @@ const ansQuestionSchema = mongoose.Schema({
     }
 });
 
-ansQuestionSchema.index({userId: 'text', quesId: 'text', answer: 'text'});
+ansQuestionSchema.index({answer: 'text'});
 
 module.exports = mongoose.model("ansQuestion", ansQuestionSchema);
