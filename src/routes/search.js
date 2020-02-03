@@ -21,13 +21,7 @@ router.post('/', (req, res, next) => {
             const response = {
                 status:201,
                 success: true,
-                questionDetails: { 
-                    id: question._id,
-                    title: question.title,
-                    question: question.question,
-                    tags: question.tags,
-                    votes: question.votes
-                }
+                questionDetails: question
             }
             res.status(201).json(response);
         }).catch(err => {
@@ -56,11 +50,7 @@ router.post('/', (req, res, next) => {
                             question: result.question,
                             votes: result.votes
                         },
-                        answer:{
-                            id: questionAns._id,
-                            quesId: questionAns.quesId,
-                            answer: questionAns.answer,
-                        }
+                        answer: questionAns
                     }
                 }
                 res.status(201).json(response);
@@ -81,11 +71,7 @@ router.post('/', (req, res, next) => {
             const response = {
                 status:201,
                 success: true,
-                userDetails: { 
-                    id: user._id,
-                    name: user.name,
-                    email: user.email
-                }
+                userDetails: user
             }
             res.status(201).json(response);
         }).catch(err => {
