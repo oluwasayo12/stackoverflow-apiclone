@@ -169,6 +169,13 @@ router.post('/:id', checkAuth, (req, res, next) => {
                     }
                     res.status(201).json(response);  
                 });
+            }).catch(err => {
+                res.status(400).json({
+                    status: 400,
+                    error: {
+                        message: err
+                    }
+                });  
             });
         }else{
             res.status(400).json({

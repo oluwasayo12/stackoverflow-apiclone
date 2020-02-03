@@ -82,6 +82,13 @@ router.post('/', (req, res, next) => {
                     }
                 })
             }
+        }).catch(err => {
+            res.status(400).json({
+                status: 400,
+                error: {
+                    message: err
+                }
+            });  
         });
     }
 });
